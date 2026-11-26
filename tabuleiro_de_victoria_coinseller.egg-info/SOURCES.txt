@@ -1,0 +1,11 @@
+README.md
+bot.py
+embeds.py
+logica.py
+pyproject.toml
+tabuleiro_de_victoria_coinseller.egg-info/PKG-INFO
+tabuleiro_de_victoria_coinseller.egg-info/SOURCES.txt
+tabuleiro_de_victoria_coinseller.egg-info/dependency_links.txt
+tabuleiro_de_victoria_coinseller.egg-info/requires.txt
+tabuleiro_de_victoria_coinseller.egg-info/top_level.txt
+tests/test_logica.py
