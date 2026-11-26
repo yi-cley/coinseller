@@ -69,25 +69,19 @@ def roll_embed(
     title = f"Rolagem de {roller_name}"
     if ability_name:
         title += f" — {ability_name}"
-    embed = discord.Embed(title=title, colour=colour)
+        embed = discord.Embed(title=title, description=f"# {roll.total}", colour=colour)
     _add_roll_details(embed, roll)
-    embed.add_field(name="RESULTADO", value=f"**{roll.total}**", inline=False)
-    return embed
 
 
 def skill_test_embed(roller_name: str, test: SkillTest) -> discord.Embed:
     colour = SUCCESS if test.success else FAILURE
     status = "SUCESSO" if test.success else "FALHA"
-    embed = discord.Embed(
+        embed = discord.Embed(
         title=f"Teste de perícia — {roller_name}",
+        description=f"# {test.roll.total} · {status}\nND {test.difficulty}",
         colour=colour,
     )
     _add_roll_details(embed, test.roll)
-    embed.add_field(
-        name="RESULTADO",
-        value=f"**{test.roll.total}** · ND {test.difficulty} — **{status}**",
-        inline=False,
-    )
     if test.can_spend_to_succeed:
         embed.add_field(
             name="Conversão com SP",
