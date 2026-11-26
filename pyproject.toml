@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "tabuleiro-de-victoria-coinseller"
+version = "0.1.0"
+description = "Bot de Discord para o Sistema de Moedas do Tabuleiro de Victoria"
+requires-python = ">=3.11"
+dependencies = [
+    "discord.py>=2.4,<3",
+    "python-dotenv>=1.0,<2",
+]
+
+[project.optional-dependencies]
+test = ["pytest>=8,<9"]
+
+[tool.setuptools]
+py-modules = ["bot", "embeds", "logica"]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]
