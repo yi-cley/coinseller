@@ -134,7 +134,6 @@ def clash_embeds(
 ) -> list[discord.Embed]:
     player_won = result.winner == "player"
     winner_name = player_name if player_won else enemy_name
-    loser_name = enemy_name if player_won else player_name
     title = f"Choque — {winner_name} vence"
     colour = SUCCESS if player_won else FAILURE
     formula_footer = (
@@ -171,15 +170,19 @@ def clash_embeds(
                 inline=False,
             )
         if page_index == len(pages) - 1:
-            embed.add_field(
-                name="Resultado",
-                value=(
-                    f"{winner_name} anula o golpe e causa **{result.damage}** de dano "
-                    f"a {loser_name} (diferença {result.margin}"
-                    f"{f' + {result.ties} de empate' if result.ties else ''})."
-                ),
-                inline=False,
-            )
+            empate = f" + {result.ties} de empate" if result.ties else ""
+            if player_won:
+                texto = (
+                    f"{player_name} anula o golpe e causa **{result.damage}** de dano "
+                    f"a {enemy_name} (diferença {result.margin}{empate})."
+                )
+            else:
+                texto = (
+                    f"{player_name} perde o Choque e sofre o golpe cheio: "
+                    f"**{result.damage}** de dano"
+                    f"{f' (inclui +{result.ties} de empate)' if result.ties else ''}."
+                )
+            embed.add_field(name="Resultado", value=texto, inline=False)
             embed.add_field(
                 name="SP",
                 value=(
