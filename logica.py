@@ -30,8 +30,8 @@ class Formula:
     modifier: int
 
     def __post_init__(self) -> None:
-        if not 0 <= self.coins <= 5:
-            raise FormulaError("No máximo 5 moedas.")
+        if not 1 <= self.coins <= 5:
+            raise FormulaError("Use de 1 a 5 moedas.")
 
     @property
     def notation(self) -> str:
