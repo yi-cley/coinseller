@@ -34,7 +34,7 @@ def test_formula_result_never_falls_below_zero():
 
 
 def test_formula_rejects_more_than_five_coins():
-    with pytest.raises(FormulaError, match="No máximo 5 moedas"):
+    with pytest.raises(FormulaError, match="1 a 5 moedas"):
         parse_formula("4+6x3")
 
 
