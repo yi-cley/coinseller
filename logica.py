@@ -183,7 +183,14 @@ def resolve_clash(
 
     winner = "player" if player_roll.total > enemy_roll.total else "enemy"
     margin = abs(player_roll.total - enemy_roll.total)
-    damage = margin + ties
+
+    if winner == "player":
+        # Venceu o Choque: anula o golpe e causa a diferença.
+        damage = margin + ties
+    else:
+        # Perdeu o Choque: sofre o golpe cheio do inimigo.
+        damage = enemy_roll.total + ties
+
     sp_change = 5 + (5 if margin >= 5 else 0)
     if winner == "player":
         player_sp_change, enemy_sp_change = sp_change, -sp_change
