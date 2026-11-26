@@ -220,21 +220,34 @@ async def text_test_command(ctx: commands.Context, *, arguments: str) -> None:
         await _send_error(ctx, str(error))
         return
     await ctx.reply(embed=skill_test_embed(_user_name(ctx.author), result))
-
+    
+@bot.command(name="c", help="Uso: !c SUA_FORMULA FORMULA_INIMIGA [BÔNUS]")
+async def text_clash_command(ctx: commands.Context, *, arguments: str) -> None:
+    parts = arguments.split()
+    if len(parts) not in (2, 3):
+        await _send_error(ctx, "Use o formato !c 4+2x3 4+1x4 [2] (fórmulas sem espaços).")
+        return
+    try:
+        bonus = int(parts[2]) if len(parts) == 3 else 0
+        player_formula = parse_formula(parts[0])
+        enemy_formula = parse_formula(parts[1])
+        result = resolve_clash(player_formula, enemy_formula, RNG, bonus)
+    except (FormulaError, ValueError) as error:
+        await _send_error(ctx, str(error))
+        return
+    await _send_embeds(
+        ctx,
+        clash_embeds(_user_name(ctx.author), "Inimigo", player_formula, enemy_formula, result),
+    )
 
 @bot.event
 async def on_command_error(
     ctx: commands.Context,
     error: commands.CommandError,
 ) -> None:
+    if isinstance(error, commands.CommandNotFound):
+        return
     if isinstance(error, commands.MissingRequiredArgument):
-        if ctx.command and ctx.command.name == "r":
-            await _send_error(ctx, "Uso: !r 4+2x3 [ +2 ].")
-            return
-        if ctx.command and ctx.command.name == "t":
-            await _send_error(ctx, "Uso: !t 2 8 [2].")
-            return
-    raise error
 
 
 @bot.event
