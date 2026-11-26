@@ -248,6 +248,16 @@ async def on_command_error(
     if isinstance(error, commands.CommandNotFound):
         return
     if isinstance(error, commands.MissingRequiredArgument):
+        if ctx.command and ctx.command.name == "r":
+            await _send_error(ctx, "Uso: !r 4+2x3 [ +2 ].")
+            return
+        if ctx.command and ctx.command.name == "t":
+            await _send_error(ctx, "Uso: !t 2 8 [2].")
+            return
+        if ctx.command and ctx.command.name == "c":
+            await _send_error(ctx, "Uso: !c 4+2x3 4+1x4 [2].")
+            return
+    raise error
 
 
 @bot.event
