@@ -72,3 +72,33 @@ def test_clash_rerolls_ties_and_adds_one_damage_per_tie():
     assert result.damage == 2
     assert result.player_sp_change == -5
     assert result.enemy_sp_change == 5
+
+class Moedas:
+    """Devolve as faces na ordem dada: 1 = cara, 0 = coroa."""
+
+    def __init__(self, faces):
+        self.faces = list(faces)
+
+    def randint(self, a, b):
+        return self.faces.pop(0)
+
+
+def test_choque_vencido_causa_a_diferenca():
+    # Você 2+2x3: cara, cara = 8. Inimigo 2+2x3: coroa, cara = 5.
+    r = resolve_clash(parse_formula("2+2x3"), parse_formula("2+2x3"), Moedas([1, 1, 0, 1]))
+    assert r.winner == "player"
+    assert r.damage == 3
+    assert r.player_sp_change == 5
+
+
+def test_choque_perdido_sofre_o_golpe_cheio():
+    # Você 2+2x3: coroa, coroa = 2. Inimigo 2+2x3: cara, cara = 8.
+    r = resolve_clash(parse_formula("2+2x3"), parse_formula("2+2x3"), Moedas([0, 0, 1, 1]))
+    assert r.winner == "enemy"
+    assert r.damage == 8
+    assert r.player_sp_change == -10
+
+
+def test_zero_moedas_e_recusado():
+    with pytest.raises(FormulaError):
+        parse_formula("4+0x3")
